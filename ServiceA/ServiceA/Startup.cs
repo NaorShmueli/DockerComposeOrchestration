@@ -1,4 +1,6 @@
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -44,16 +46,13 @@ namespace ServiceA
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+            app.UseMetricsAllEndpoints();
+            app.UseEndpoints(endpoint => {
+                endpoint.MapControllers();
+                endpoint.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
             });
+            EnableSwagger(app);
         }
     }
 }

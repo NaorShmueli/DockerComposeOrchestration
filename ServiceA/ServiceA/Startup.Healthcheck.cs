@@ -10,6 +10,7 @@ namespace ServiceA
     {
         public void AddHealthChecks(IServiceCollection services)
         {
+            services.AddHealthChecks().AddSqlServer(Configuration["SQL_CON_STRINGS"]);
         }
     }
 }

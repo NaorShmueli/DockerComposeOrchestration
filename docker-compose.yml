@@ -3,7 +3,7 @@ version: '3.4'
 services:
   
   service_a:
-    image: ${DOCKER_REGISTRY-}service_a
+    image: service_a
     container_name: service_a
     build:
       context: .
@@ -16,9 +16,11 @@ services:
     - 443:443
     env_file:
       - service_a.env
+    networks:
+      - isolation-network
 
   service_b:
-    image: ${DOCKER_REGISTRY-}service_b
+    image: service_b
     container_name: service_b
     depends_on:
       - service_a
@@ -33,10 +35,12 @@ services:
     - 444:443
     env_file:
       - service_b.env
+    networks:
+      - isolation-network
 
   service_c:
-    image: ${DOCKER_REGISTRY-}service_c
-    container_name: service_a
+    image: service_c
+    container_name: service_c
     depends_on:
       - service_b
     build:
@@ -47,7 +51,12 @@ services:
         nuget_repository: https://api.nuget.org/v3/index.json
     ports:
     - 8083:80
-    - 445:443
+    - 441:443
     env_file:
       - service_c.env
+    networks:
+      - isolation-network
+networks:
+  isolation-network:
+    driver: bridge
   
