@@ -28,6 +28,8 @@ namespace ServiceA
             AddHealthChecks(services);
             ConfigureLogs(services);
             ConfigureMetrics(services);
+            services.AddHttpClient();
+
             services.AddControllers().AddNewtonsoftJson(option =>
             {
                 option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
