@@ -30,7 +30,7 @@ services:
         nuget_repository: https://api.nuget.org/v3/index.json
     ports:
     - 8082:80
-    - 443:443
+    - 444:443
     env_file:
       - service_b.env
 
@@ -47,7 +47,7 @@ services:
         nuget_repository: https://api.nuget.org/v3/index.json
     ports:
     - 8083:80
-    - 443:443
+    - 445:443
     env_file:
       - service_c.env
   

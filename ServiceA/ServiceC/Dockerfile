@@ -7,10 +7,9 @@ WORKDIR /src
 ARG nuget_repository=https://api.nuget.org/v3/index.json
 ARG source_folder
 COPY ["${source_folder}ServiceC.csproj", "ServiceC/"]
-
+WORKDIR "/src/ServiceC"
 RUN dotnet restore "ServiceC.csproj"
 COPY ["${source_folder}.", "."]
-WORKDIR "/src/ServiceC"
 
 RUN dotnet build "ServiceC.csproj" -c Release -o /app/build
 
