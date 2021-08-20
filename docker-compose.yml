@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  
+  service_a:
+    image: ${DOCKER_REGISTRY-}service_a
+    container_name: service_a
+    build:
+      context: .
+      dockerfile: ServiceA/ServiceA/Dockerfile
+      args:
+        source_folder: ServiceA/ServiceA/
+        nuget_repository: https://api.nuget.org/v3/index.json
+    ports:
+    - 8081:80
+    - 443:443
+    env_file:
+      - service_a.env
+
+  service_b:
+    image: ${DOCKER_REGISTRY-}service_b
+    container_name: service_b
+    depends_on:
+      - service_a
+    build:
+      context: .
+      dockerfile: ServiceA/ServiceB/Dockerfile
+      args:
+        source_folder: ServiceA/ServiceB/
+        nuget_repository: https://api.nuget.org/v3/index.json
+    ports:
+    - 8082:80
+    - 443:443
+    env_file:
+      - service_b.env
+
+  service_c:
+    image: ${DOCKER_REGISTRY-}service_c
+    container_name: service_a
+    depends_on:
+      - service_b
+    build:
+      context: .
+      dockerfile: ServiceA/ServiceC/Dockerfile
+      args:
+        source_folder: ServiceA/ServiceC/
+        nuget_repository: https://api.nuget.org/v3/index.json
+    ports:
+    - 8083:80
+    - 443:443
+    env_file:
+      - service_c.env
+  
